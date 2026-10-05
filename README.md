@@ -1,0 +1,1 @@
+# Coman_Florin-David_TI_312_Sisteme_de_recunoa-tere_a_formelor
