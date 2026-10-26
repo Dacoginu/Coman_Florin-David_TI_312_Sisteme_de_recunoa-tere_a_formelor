@@ -3,7 +3,7 @@ using System.Text.RegularExpressions;
 using System.Xml.Linq;
 using WordFrequency;
 
-string root = @"C:\Users\david\Desktop\Morariu\Reuters\Reuters_34";
+string root = @"C:\Users\david\Desktop\Morariu\Reuters\Reuters_7083";
 string stopPath = @"C:\Users\david\Desktop\Morariu\Documentation\stopwords.txt";
 string outDir = @"C:\Users\david\Desktop\Morariu";
 
@@ -17,9 +17,9 @@ PorterStemmer stemmer = new PorterStemmer();
 // un articol = frecventele lui + topicurile + folderul
 var docs = new List<(Dictionary<string, int> Freq, List<string> Topics, string Folder)>();
 
-foreach (string folder in new[] { "Training", "Testing" })
+foreach (string folder in new[] { "Training" })
 {
-    foreach (string file in Directory.GetFiles(Path.Combine(root, folder), "*.xml"))
+    foreach (string file in Directory.GetFiles(root, "*.xml"))
     {
         XDocument doc = XDocument.Load(file);
         string title = doc.Root!.Element("title")?.Value ?? "";
@@ -45,13 +45,14 @@ foreach (string folder in new[] { "Training", "Testing" })
 }
 
 // dictionarul global: toate cuvintele, sortate alfabetic, cu indexul lor
-List<string> dictionary = docs.SelectMany(d => d.Freq.Keys).Distinct().OrderBy(w => w, StringComparer.Ordinal).ToList();
+List<string> dictionary = docs.SelectMany(d => d.Freq.Keys)
+    .Distinct().OrderBy(w => w, StringComparer.Ordinal).ToList();
 Dictionary<string, int> index = new Dictionary<string, int>();
 for (int i = 0; i < dictionary.Count; i++) index[dictionary[i]] = i;
 
-foreach (string folder in new[] { "Training", "Testing" })
+foreach (string folder in new[] { "Training" })
 {
-    string outPath = Path.Combine(outDir, folder + ".txt");
+    string outPath = Path.Combine(outDir, "Reuters_7083.txt");
 
     using (var writer = new StreamWriter(outPath, false, Encoding.UTF8))
     {
